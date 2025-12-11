@@ -10,6 +10,7 @@ import {
   reverse2DArr,
   addDiagonalXmas,
 } from "./day_4.js";
+import { countXmas as countXmasRedo } from "./day_4_redo.js";
 import { execPath } from "process";
 function testFindHorizontal() {
   const case1 = "XMASXMAS";
@@ -178,7 +179,8 @@ async function testCountXmas() {
   const case1 = await fs.readFile("./day_4.txt", "utf8");
 
   const lineArr = case1.split("\n");
-  const res = countXmas(lineArr);
+  // const res = countXmas(lineArr);
+  const res = countXmasRedo(lineArr);
   const expectation = 2569;
   expect(res, expectation);
 }
