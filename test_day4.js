@@ -9,6 +9,7 @@ import {
   countXmas,
   reverse2DArr,
   addDiagonalXmas,
+  countCrossXmas,
 } from "./day_4.js";
 import { countXmas as countXmasRedo } from "./day_4_redo.js";
 import { execPath } from "process";
@@ -184,4 +185,18 @@ async function testCountXmas() {
   const expectation = 2569;
   expect(res, expectation);
 }
-await testCountXmas();
+// await testCountXmas();
+
+async function testCountXmasPart2() {
+  // const case1 = await fs.readFile("./day_4_part2_small.txt", "utf8");
+  const case1 = await fs.readFile("./day_4.txt", "utf8");
+
+  const lineArr = case1.split("\n");
+  // const res = countXmas(lineArr);
+  const res = countCrossXmas(lineArr);
+  // const expectation = 9;
+  const expectation = 1998;
+  expect(res, expectation);
+}
+
+await testCountXmasPart2();

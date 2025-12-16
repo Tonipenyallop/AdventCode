@@ -173,3 +173,85 @@ function findChar(
   // FIXED: Correctly passes the next diagonal coordinates (nextRow, nextCol)
   return findChar(lineArr, nextRow, nextCol, nextXmasIdx);
 }
+
+export function countCrossXmas(grid) {
+  if (!grid) {
+    throw new Error(`grid not provided`);
+  }
+
+  let out = 0;
+  const ROW = grid.length;
+  const COL = grid[0].length;
+
+  function isOutOfBounds(row, col) {
+    return !(0 <= row && row < ROW) || !(0 <= col && col < COL);
+  }
+
+  const VECTORS = [
+    // diagonal left top
+    [-1, -1],
+    // diagonal right top
+    [-1, 1],
+    // diagonal left bottom
+    [1, -1],
+    // diagonal right bottom
+    [1, 1],
+  ];
+
+  const targetStr = "MAS";
+  const firstTarget = targetStr[1]; // "A"
+  const targets = [targetStr[0], targetStr[2]]; // "M", "S"
+
+  for (let row = 0; row < ROW; row++) {
+    for (let col = 0; col < COL; col++) {
+      // contains X
+      if (grid[row][col] === firstTarget) {
+        console.log("found first target");
+        console.log("row,col", row, col);
+        let isFound = true;
+
+        const masVals = []; //leftTop, rightTop, leftBottom, rightBottom order
+
+        // check out of bounds
+        // loop with each vectors
+        for (let i = 0; i < VECTORS.length; i++) {
+          const [dr, dc] = VECTORS[i];
+
+          const nextRow = row + dr;
+          const nextCol = col + dc;
+
+          if (isOutOfBounds(nextRow, nextCol)) {
+            isFound = false;
+            break;
+          }
+
+          if (
+            grid[nextRow][nextCol] !== "M" &&
+            grid[nextRow][nextCol] !== "S"
+          ) {
+            isFound = false;
+            break;
+          }
+          masVals.push(grid[nextRow][nextCol]);
+        }
+
+        if (isFound) {
+          // when we found, we are sure all the value in the array is either M or S
+
+          if (masVals[0] !== masVals[3] && masVals[1] !== masVals[2]) {
+            out++;
+          }
+        }
+      }
+    }
+  }
+
+  return out;
+}
+
+async function main2() {
+  const file = await fs.readFile("./day_4.txt", "utf8");
+  const strGrid = file.split("\n").map((line) => line.split(""));
+
+  return countCrossXmas(strGrid);
+}
